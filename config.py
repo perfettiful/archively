@@ -1,10 +1,9 @@
-# config.py
 import os
 
 DB_NAME = os.environ.get("DB_NAME", "link_archive")
 DB_USER = os.environ.get("DB_USER", "link_user")
 DB_PASSWORD = os.environ.get("DB_PASSWORD", "link_password")
-DB_HOST = os.environ.get("DB_HOST", "db")  # "db" is the Docker Compose service name
+DB_HOST = os.environ.get("DB_HOST", "localhost")
 DB_PORT = os.environ.get("DB_PORT", "5432")
 
 class Config:

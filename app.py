@@ -25,8 +25,18 @@ def create_app():
                 db.session.commit()
                 return redirect(url_for('index'))
 
-        # READ (list all)
-        links = Link.query.all()
+        # READ (list all) with search
+        search_query = request.args.get('q', '')
+        if search_query:
+            links = Link.query.filter(
+                db.or_(
+                    Link.url.ilike(f'%{search_query}%'),
+                    Link.tags.ilike(f'%{search_query}%')
+                )
+            ).all()
+        else:
+            links = Link.query.all()
+            
         return render_template('index.html', links=links)
 
     @app.route('/delete/<int:link_id>', methods=['GET'])
