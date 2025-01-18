@@ -5,6 +5,28 @@ from flask_migrate import Migrate
 from config import Config
 from models import db, Link
 
+import re
+import urllib.request
+
+def get_youtube_info(url):
+    html = urllib.request.urlopen(url).read().decode('utf-8', errors='ignore')
+    
+    # Extract title from meta tags
+    title_match = re.search(
+        r'<meta[^>]+property="og:title"[^>]+content="([^"]+)"',
+        html
+    )
+    title = title_match.group(1) if title_match else None
+    
+    # Extract thumbnail from meta tags
+    thumb_match = re.search(
+        r'<meta[^>]+property="og:image"[^>]+content="([^"]+)"',
+        html
+    )
+    thumbnail = thumb_match.group(1) if thumb_match else None
+    
+    return title, thumbnail
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
@@ -19,8 +41,10 @@ def create_app():
         if request.method == 'POST':
             url = request.form.get('url')
             tags = request.form.get('tags')
+
+            video_title, thumbnail_url = get_youtube_info(url)
             if url:
-                new_link = Link(url=url, tags=tags)
+                new_link = Link(url=url, tags=tags, thumbnail=thumbnail_url, title=video_title)
                 db.session.add(new_link)
                 db.session.commit()
                 return redirect(url_for('index'))

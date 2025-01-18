@@ -8,6 +8,8 @@ class Link(db.Model):
     __tablename__ = 'links'
 
     id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255), nullable=True)
+    thumbnail = db.Column(db.String(255), nullable=True)
     url = db.Column(db.String(255), nullable=False)
     tags = db.Column(db.String(255), nullable=True)  # Simple comma-separated tags
 
