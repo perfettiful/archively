@@ -64,8 +64,8 @@
         <div class="card mb-4 shadow-sm">
           <div class="card-body">
             <h5 class="card-title">Search Links</h5>
-            <form class="d-flex" method="GET" action="{{ url_for('index') }}">
-              <div class="input-group">
+            <form class="d-flex justify-content-center" method="GET" action="{{ url_for('index') }}">
+              <div class="input-group w-75">
                 <input 
                   type="text" 
                   class="form-control" 
@@ -73,7 +73,14 @@
                   placeholder="Search URLs and tags..."
                   value="{{ request.args.get('q', '') }}"
                 >
-                <button class="btn btn-primary" type="submit">Search</button>
+                {% if request.args.get('q') %}
+                  <a href="{{ url_for('index') }}" class="btn btn-outline-secondary text-white">
+                    <i class="bi bi-x-lg fw-normal">
+                      &#10005;
+                    </i>
+                  </a>
+                {% endif %}
+                <button class="btn btn-primary w-25" type="submit">Search</button>
               </div>
             </form>
           </div>
