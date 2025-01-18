@@ -1,0 +1,100 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Link Archiver</title>
+  <!-- Bootswatch Vapor theme (Bootstrap 5) -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.0/dist/vapor/bootstrap.min.css"
+  />
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="mb-4">Link Archiver</h1>
+
+    <!-- CREATE Form -->
+    <form method="POST" action="{{ url_for('index') }}" class="mb-4">
+      <div class="row g-3">
+        <div class="col-auto">
+          <label for="url" class="visually-hidden">URL</label>
+          <input
+            type="text"
+            class="form-control"
+            name="url"
+            id="url"
+            placeholder="Enter URL"
+            required
+          />
+        </div>
+        <div class="col-auto">
+          <label for="tags" class="visually-hidden">Tags</label>
+          <input
+            type="text"
+            class="form-control"
+            name="tags"
+            id="tags"
+            placeholder="Comma-separated tags"
+          />
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary">Add Link</button>
+        </div>
+      </div>
+    </form>
+
+    <!-- READ all links -->
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>URL</th>
+          <th>Tags</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for link in links %}
+        <tr>
+          <td>{{ link.url }}</td>
+          <td>{{ link.tags or '' }}</td>
+          <td>
+            <!-- Update Form -->
+            <form
+              method="POST"
+              action="{{ url_for('update_link', link_id=link.id) }}"
+              class="d-inline-flex"
+            >
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                name="url"
+                value="{{ link.url }}"
+                required
+              />
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                name="tags"
+                value="{{ link.tags }}"
+              />
+              <button class="btn btn-sm btn-warning" type="submit">
+                Update
+              </button>
+            </form>
+            <!-- Delete Link -->
+            <a
+              href="{{ url_for('delete_link', link_id=link.id) }}"
+              class="btn btn-sm btn-danger"
+              onclick="return confirm('Are you sure you want to delete this link?');"
+            >
+              Delete
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

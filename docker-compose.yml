@@ -1,0 +1,40 @@
+# docker-compose.yml
+
+version: "3.9"
+
+services:
+  db:
+    image: postgres:14
+    container_name: link_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: link_archive
+      POSTGRES_USER: link_user
+      POSTGRES_PASSWORD: link_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    container_name: link_flask
+    restart: always
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      DB_NAME: link_archive
+      DB_USER: link_user
+      DB_PASSWORD: link_password
+      DB_HOST: db
+      DB_PORT: 5432
+      SECRET_KEY: "super-secret-key"
+    volumes:
+      - .:/app
+    # Optional: if you want to run the app as soon as the container starts:
+    command: flask run --host=0.0.0.0
+
+volumes:
+  postgres_data:
