@@ -35,3 +35,77 @@ Before you begin, ensure you have met the following requirements:
 - **Homebrew:** Package manager for macOS. [Install Homebrew](https://brew.sh/)
 - **PostgreSQL:** Installed and running locally (via Homebrew or otherwise).
 
+# Setup Instructions
+
+## Local Development Setup
+
+1. Create and activate virtual environment
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+2. Install dependencies
+```
+pip install -r requirements.txt
+```
+3. Set up the database
+```
+flask db init
+flask db migrate -m "initial migration"
+flask db upgrade
+```
+4. Run the application
+```
+flask run
+```
+
+## Docker Setup
+
+0. Install Docker and Docker Compose
+- Link: https://docs.docker.com/get-docker/
+
+1. Build the Docker containers
+```
+docker compose build
+```
+
+2. Run the services
+```
+docker compose up -d
+```
+
+3.Run database migrations
+```
+docker compose exec web flask db init
+docker compose exec web flask db migrate -m "initial migration"
+docker compose exec web flask db upgrade
+```
+
+4. View logs (optional)
+```
+docker compose logs -f
+```
+
+5. Stop services
+```
+docker compose down
+```
+
+### Common Flask Commands
+
+- Create new migration: ```flask db migrate -m "description"```
+- Apply migrations: ```flask db upgrade```
+- Rollback migration: ```flask db downgrade```
+- Show migration history: ```flask db history```
+- Show current migration: ```flask db current```
+
+### Common Docker Commands
+
+- Rebuild specific service: `docker compose build web`
+- Restart services: docker `compose restart`
+- View running containers: `docker compose ps`
+- Access container shell: `docker compose exec web bash`
+- View service logs: `docker compose logs web`
+- Stop services: `docker compose down`
+
+
