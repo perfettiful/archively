@@ -9,7 +9,10 @@ import re
 import urllib.request
 
 def get_youtube_info(url):
-    html = urllib.request.urlopen(url).read().decode('utf-8', errors='ignore')
+    try:
+        html = urllib.request.urlopen(url).read().decode('utf-8', errors='ignore')
+    except HTTPError:
+        return None, None
     
     # Extract title from meta tags
     title_match = re.search(
@@ -43,7 +46,7 @@ def create_app():
             tags = request.form.get('tags')
 
             video_title, thumbnail_url = get_youtube_info(url)
-            if url:
+            if video_title and thumbnail_url:
                 new_link = Link(url=url, tags=tags, thumbnail=thumbnail_url, title=video_title)
                 db.session.add(new_link)
                 db.session.commit()

@@ -54,6 +54,7 @@
                   name="tags"
                   id="tags"
                   placeholder="comma, separated, tags"
+                  required
                 />
                 <div class="form-text">Enter tags separated by commas.</div>
               </div>
@@ -107,7 +108,7 @@
                       <td style="max-width: 300px;" class="text-truncate">
                         <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">
                           <p title="{{link.title}}">{{link.title}}</p>
-                          <img src="{{ link.thumbnail }}" alt="Thumbnail" class="img-thumbnail" style="max-width: 100%;">
+                          <img src="{{ link.thumbnail }}" alt="Thumbnail" class="img-thumbnail" style="max-width: 100%;" loading="lazy">
                         </a>
                       </td>
                       <td>{{ link.tags or '-' }}</td>
